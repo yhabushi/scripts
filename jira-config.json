@@ -1,0 +1,23 @@
+{
+    "access_token": "<token>",  
+    "jira_base_url": "https://issues.redhat.com",
+    "jira_api_version": "3",
+    "jql_query": "project = GENIE AND issuetype = Bug AND assignee in (rh-ee-yhabushi)",
+    "fields": [
+        "key",
+        "summary",
+        "status",
+        "assignee",
+        "reporter",
+        "priority",
+        "issuetype",
+        "created",
+        "updated",
+        "description",
+        "resolution"
+    ],
+    "export_format": "json",
+    "max_results": 100,
+    "export_filename": "redhat-genie-tickets"
+}
+
