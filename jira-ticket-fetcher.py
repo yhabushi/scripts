@@ -2,7 +2,7 @@ import json
 import requests
 import os
 
-CONFIG_FILE = 'jira_config.json'
+CONFIG_FILE = 'jira-config.json'
 
 def load_config(config_path):
     """Loads the configuration from a JSON file."""
@@ -79,7 +79,7 @@ def fetch_jira_tickets(config):
             if start_at >= total_issues_expected or not issues_on_page:
                 print("All issues fetched or no more issues to fetch.")
                 break
-        
+
         except requests.exceptions.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
             print(f"Response content: {response.content.decode()}")
@@ -162,4 +162,3 @@ if __name__ == "__main__":
                 save_tickets(fetched_tickets, configuration)
             else:
                 print("Ticket fetching failed or returned no tickets.")
-
