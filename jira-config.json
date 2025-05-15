@@ -1,7 +1,6 @@
 {
-    "access_token": "<token>",  
+    "access_token": "<token>",
     "jira_base_url": "https://issues.redhat.com",
-    "jira_api_version": "3",
     "jql_query": "project = GENIE AND issuetype = Bug AND assignee in (rh-ee-yhabushi)",
     "fields": [
         "key",
@@ -14,10 +13,72 @@
         "created",
         "updated",
         "description",
-        "resolution"
+        "resolution",
+        "comment"
     ],
     "export_format": "json",
     "max_results": 100,
-    "export_filename": "redhat-genie-tickets"
+    "export_filename": "redhat-genie-tickets",
+    "tickets_per_file": 2,
+    "global_key_exclusions": [
+        "expand",
+        "id",
+        "self"
+    ],
+    "ticket_field_exclusions": {
+        "reporter": [
+            "self",
+            "avatarUrls",
+            "key",
+            "emailAddress",
+            "active",
+            "timeZone"
+        ],
+        "assignee": [
+            "self",
+            "avatarUrls",
+            "key",
+            "emailAddress",
+            "active",
+            "timeZone"
+        ],
+        "issuetype": [
+            "self",
+            "iconUrl",
+            "avatarId",
+            "description"
+        ],
+        "priority": [
+            "self",
+            "iconUrl"
+        ],
+        "status": [
+            "self",
+            "iconUrl",
+            "statusCategory.self",
+            "statusCategory.id",
+            "statusCategory.key",
+            "statusCategory.colorName"
+        ],
+        "resolution": [
+            "self"
+        ],
+        "comment": [ 
+            "comments.self",
+            "comments.id",
+            "comments.author.self",
+            "comments.author.key",
+            "comments.author.active",
+            "comments.author.timeZone",
+            "comments.author.avatarUrls",
+            "comments.updateAuthor.self",
+            "comments.updateAuthor.key",
+            "comments.updateAuthor.active",
+            "comments.updateAuthor.timeZone",
+            "comments.updateAuthor.avatarUrls",
+            "maxResults",
+            "total",
+            "startAt"
+        ]
+    }
 }
-
