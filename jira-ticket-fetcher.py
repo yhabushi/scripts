@@ -27,19 +27,19 @@ def fetch_jira_tickets(config):
 
     access_token = config.get("access_token")
     jira_base_url = config.get("jira_base_url")
-    # Construct the search URL for the Jira API
-    search_url = f"{jira_base_url}/rest/api/latest/search"
-
     jql_query = config.get("jql_query")
     # Default to fetching 'key' and 'summary' if 'fields' is not specified in config
-    fields = config.get("fields", ["key", "summary"]) 
+    fields = config.get("fields", ["key", "summary"])
     # Default to fetching 100 results per API call if 'max_results' is not specified
-    max_results_per_request = config.get("max_results", 100) 
+    max_results_per_request = config.get("max_results", 100)
 
-    # Check for essential configuration parameters
+    # Fix: validate essential config BEFORE building the URL so we never produce "None/rest/api/..."
     if not all([access_token, jira_base_url, jql_query]):
         print("Error: Missing critical configuration: access_token, jira_base_url, or jql_query.")
         return None
+
+    # Construct the search URL for the Jira API (safe now that jira_base_url is validated)
+    search_url = f"{jira_base_url}/rest/api/latest/search"
 
     # Set up headers for the API request
     headers = {
@@ -197,7 +197,8 @@ def process_tickets_data(tickets, config):
 
 def save_tickets(tickets, config):
     """Saves the fetched tickets to one or more files based on config."""
-    if tickets is None:
+    # Fix: use 'not tickets' so an empty list [] is also caught, not just None
+    if not tickets:
         print("No tickets to save.")
         return
 
@@ -207,20 +208,20 @@ def save_tickets(tickets, config):
 
     export_filename_base = config.get("export_filename", "jira_tickets")
     export_format = config.get("export_format", "json").lower()
-    tickets_per_file_str = config.get("tickets_per_file") 
-    tickets_per_file = None # Initialize
-
+    # Fix: renamed from _str (JSON delivers int, not str); broadened except to cover TypeError too
+    tickets_per_file_raw = config.get("tickets_per_file")
+    tickets_per_file = None  # Initialize
 
     # Validate tickets_per_file from config
-    if tickets_per_file_str is not None:
+    if tickets_per_file_raw is not None:
         try:
-            tickets_per_file = int(tickets_per_file_str)
+            tickets_per_file = int(tickets_per_file_raw)
             if tickets_per_file <= 0:
-                print(f"Warning: 'tickets_per_file' ({tickets_per_file_str}) is not a positive integer. Saving all tickets to a single file.")
-                tickets_per_file = None # Revert to single file behavior if invalid
-        except ValueError:
-            print(f"Warning: 'tickets_per_file' ('{tickets_per_file_str}') is not a valid integer. Saving all tickets to a single file.")
-            tickets_per_file = None # Revert to single file behavior if not an integer
+                print(f"Warning: 'tickets_per_file' ({tickets_per_file_raw}) is not a positive integer. Saving all tickets to a single file.")
+                tickets_per_file = None  # Revert to single file behavior if invalid
+        except (ValueError, TypeError):
+            print(f"Warning: 'tickets_per_file' ('{tickets_per_file_raw}') is not a valid integer. Saving all tickets to a single file.")
+            tickets_per_file = None  # Revert to single file behavior if not an integer
     
     total_tickets = len(tickets)
 
