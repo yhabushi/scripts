@@ -2,21 +2,22 @@
 
 echo "Starting process..."
 
-# 1. Potential Unary Operator Error (Missing quotes around variable)
-if [ $UNDEFINED_VAR == "hello" ]
+# 1. Fix: Quoted variable + POSIX-compatible = operator
+if [ "$UNDEFINED_VAR" = "hello" ]
 then
     echo "Found it"
-    
-    # 2. Syntax Error: Missing 'done' to close the loop
+
+    # 2. Fix: Added 'done' to close the for loop
     for i in 1 2 3
     do
         echo $i
-    
-# 3. Syntax Error: Missing 'fi' (The shell will think 'fi' below is part of the string)
-# fi 
+    done
 
-# 4. Critical Syntax Error: Unclosed double quote
-echo "This line has an unclosed quote
+# 3. Fix: Uncommented 'fi' so the if block is properly closed
+fi
 
-# 5. Logic Error: This code is unreachable because of the errors above
+# 4. Fix: Closed the double quote
+echo "This line has an unclosed quote"
+
+# 5. This line is now reachable
 echo "Process complete"
