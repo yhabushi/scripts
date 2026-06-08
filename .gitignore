@@ -1,0 +1,11 @@
+# Jira configuration (contains credentials - never commit)
+jira-config.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Exported ticket data files
+redhat-genie-tickets*.json
+jira_tickets*.json
