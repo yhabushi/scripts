@@ -3,22 +3,21 @@ set -euo pipefail
 
 echo "Starting process..."
 
-# 1. Fixed: Added quotes around variable to prevent unary operator error
-#    Fixed: Use = instead of == for POSIX-compliant string comparison in [ ]
+# 1. Fixed: Quote the variable to prevent unary operator error when unset/empty
+#    Also use = instead of == for POSIX compatibility in [ ]
 if [ "${UNDEFINED_VAR:-}" = "hello" ]; then
     echo "Found it"
 
-    # 2. Fixed: Added 'done' to close the for loop
+    # 2. Fixed: Added closing 'done' for the for loop
     for i in 1 2 3; do
-        # Fixed: Quoted variable in echo
         echo "$i"
     done
 
-# 3. Fixed: Added 'fi' to close the if block
 fi
+# 3. Fixed: Restored 'fi' to close the if block
 
 # 4. Fixed: Closed the double quote
-echo "This line has a closed quote"
+echo "This line has a properly closed quote"
 
-# 5. This line is now reachable
+# 5. This code is now reachable
 echo "Process complete"
