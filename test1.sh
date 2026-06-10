@@ -1,22 +1,23 @@
 #!/bin/bash
+set -euo pipefail
 
 echo "Starting process..."
 
-# 1. Potential Unary Operator Error (Missing quotes around variable)
-if [ $UNDEFINED_VAR == "hello" ]
-then
+# 1. Fixed: Quote the variable to prevent unary operator error when unset/empty
+#    Also use = instead of == for POSIX compatibility in [ ]
+if [ "${UNDEFINED_VAR:-}" = "hello" ]; then
     echo "Found it"
-    
-    # 2. Syntax Error: Missing 'done' to close the loop
-    for i in 1 2 3
-    do
-        echo $i
-    
-# 3. Syntax Error: Missing 'fi' (The shell will think 'fi' below is part of the string)
-# fi 
 
-# 4. Critical Syntax Error: Unclosed double quote
-echo "This line has an unclosed quote
+    # 2. Fixed: Added closing 'done' for the for loop
+    for i in 1 2 3; do
+        echo "$i"
+    done
 
-# 5. Logic Error: This code is unreachable because of the errors above
+fi
+# 3. Fixed: Restored 'fi' to close the if block
+
+# 4. Fixed: Closed the double quote
+echo "This line has a properly closed quote"
+
+# 5. This code is now reachable
 echo "Process complete"

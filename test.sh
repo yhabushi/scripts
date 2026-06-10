@@ -1,2 +1,4 @@
-#! /bin/bash
+#!/bin/bash
+set -euo pipefail
+
 echo "test completed"
